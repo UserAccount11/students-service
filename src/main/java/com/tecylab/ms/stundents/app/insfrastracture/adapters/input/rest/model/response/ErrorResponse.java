@@ -1,4 +1,4 @@
-package com.tecylab.ms.stundents.app.domain.model;
+package com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest.model.response;
 
 import lombok.Builder;
 import lombok.Getter;
