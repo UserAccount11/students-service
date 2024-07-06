@@ -19,7 +19,7 @@ public class StudentCreateRequest {
   @NotBlank(message = "Field firstname cannot be empty or null")
   private String firstname;
 
-  @NotBlank(message = "Field firstname cannot be empty or null")
+  @NotBlank(message = "Field lastname cannot be empty or null")
   private String lastname;
 
   @NotNull(message = "Field age cannot be null")
