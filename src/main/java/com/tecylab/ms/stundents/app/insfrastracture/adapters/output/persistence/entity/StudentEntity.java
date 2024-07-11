@@ -1,27 +1,23 @@
 package com.tecylab.ms.stundents.app.insfrastracture.adapters.output.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@SuperBuilder
 @Getter
 @Setter
-@Entity
+@Document(collection = "students")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "students")
 public class StudentEntity {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
+  private String id;
   private String firstname;
   private String lastname;
   private Integer age;

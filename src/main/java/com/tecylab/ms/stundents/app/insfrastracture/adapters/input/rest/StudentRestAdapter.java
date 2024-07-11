@@ -33,7 +33,7 @@ public class StudentRestAdapter {
   }
 
   @GetMapping("/v1/students/{id}")
-  public StudentResponse findById(@PathVariable Long id) {
+  public StudentResponse findById(@PathVariable String id) {
     return restMapper.toStudentResponse(inputPort.findById(id));
   }
 
@@ -43,7 +43,7 @@ public class StudentRestAdapter {
         inputPort.save(restMapper.toStudent(request)));
 
     return ResponseEntity
-        .created(URI.create("/api/v1/students/".concat(response.getId().toString())))
+        .created(URI.create("/api/v1/students/".concat(response.getId())))
         .body(response);
 
 //    return ResponseEntity.status(HttpStatus.CREATED)
@@ -52,14 +52,14 @@ public class StudentRestAdapter {
   }
 
   @PutMapping("/v1/students/{id}")
-  public StudentResponse update(@PathVariable Long id,
+  public StudentResponse update(@PathVariable String id,
                                 @Valid @RequestBody StudentCreateRequest request) {
     return restMapper.toStudentResponse(
         inputPort.update(id, restMapper.toStudent(request)));
   }
 
   @DeleteMapping("/v1/students/{id}")
-  public void delete(@PathVariable Long id) {
+  public void delete(@PathVariable String id) {
     inputPort.deleteById(id);
   }
 

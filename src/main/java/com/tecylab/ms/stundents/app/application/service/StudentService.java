@@ -16,7 +16,7 @@ public class StudentService implements StudentInputPort {
   private final StudentPersistentPort persistentPort;
 
   @Override
-  public Student findById(Long id) {
+  public Student findById(String id) {
     return persistentPort.findById(id)
         .orElseThrow(StudentNotFoundException::new);
   }
@@ -32,7 +32,7 @@ public class StudentService implements StudentInputPort {
   }
 
   @Override
-  public Student update(Long id, Student student) {
+  public Student update(String id, Student student) {
     return persistentPort.findById(id)
         .map(savedStudent -> {
           savedStudent.setFirstname(student.getFirstname());
@@ -45,7 +45,7 @@ public class StudentService implements StudentInputPort {
   }
 
   @Override
-  public void deleteById(Long id) {
+  public void deleteById(String id) {
     if (persistentPort.findById(id).isEmpty()) {
       throw new StudentNotFoundException();
     }

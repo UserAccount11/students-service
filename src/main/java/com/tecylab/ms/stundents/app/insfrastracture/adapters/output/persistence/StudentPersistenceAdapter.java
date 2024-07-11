@@ -18,7 +18,7 @@ public class StudentPersistenceAdapter implements StudentPersistentPort {
   private final StudentJpaRepository repository;
 
   @Override
-  public Optional<Student> findById(Long id) {
+  public Optional<Student> findById(String id) {
     return repository.findById(id)
         .map(mapper::toStudent);
   }
@@ -35,7 +35,7 @@ public class StudentPersistenceAdapter implements StudentPersistentPort {
   }
 
   @Override
-  public void deleteById(Long id) {
+  public void deleteById(String id) {
     repository.deleteById(id);
   }
 }

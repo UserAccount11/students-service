@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface StudentInputPort {
 
-  Student findById(Long id);
+  Student findById(String id);
   List<Student> findAll();
   Student save(Student student);
-  Student update(Long id, Student student);
-  void deleteById(Long id);
+  Student update(String id, Student student);
+  void deleteById(String id);
 
 }

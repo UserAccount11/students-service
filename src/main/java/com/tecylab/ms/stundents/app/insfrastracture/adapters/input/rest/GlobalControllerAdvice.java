@@ -3,6 +3,8 @@ package com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest;
 import com.tecylab.ms.stundents.app.domain.exception.StudentNotFoundException;
 import com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest.model.response.ErrorResponse;
 import com.tecylab.ms.stundents.app.utils.ErrorCatalog;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 import static com.tecylab.ms.stundents.app.utils.ErrorCatalog.STUDENT_BAD_PARAMETERS;
 import static com.tecylab.ms.stundents.app.utils.ErrorCatalog.STUDENT_NOT_FOUND;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 
@@ -39,7 +42,7 @@ public class GlobalControllerAdvice {
         .message(STUDENT_BAD_PARAMETERS.getMessage())
         .details(bindingResult.getFieldErrors()
             .stream()
-            .map(fieldError -> fieldError.getDefaultMessage())
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .toList())
         .timestamp(LocalDateTime.now())
         .build();
@@ -47,7 +50,8 @@ public class GlobalControllerAdvice {
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(Exception.class)
-  public ErrorResponse handleGenericException() {
+  public ErrorResponse handleGenericException(Exception e) {
+    log.error("Error: {}", e.getMessage());
     return ErrorResponse.builder()
         .code(ErrorCatalog.GENERIC_ERROR.getCode())
         .message(ErrorCatalog.GENERIC_ERROR.getMessage())

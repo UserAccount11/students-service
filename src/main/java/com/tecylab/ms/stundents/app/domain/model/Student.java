@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Student {
 
-  private Long id;
+  private String id;
   private String firstname;
   private String lastname;
   private Integer age;
