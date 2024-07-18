@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class StudentServiceTest {
+class StudentServiceTest {
 
   @Mock
   private StudentPersistentPort persistentPort;
@@ -35,7 +36,7 @@ public class StudentServiceTest {
   private StudentService studentService;
 
   @Test
-  public void testFindById_Success() {
+  void testFindById_Success() {
     // Inicialización
     when(persistentPort.findById(anyLong()))
         .thenReturn(Optional.of(TestUtils.buildStudentMock()));
@@ -52,7 +53,7 @@ public class StudentServiceTest {
   }
 
   @Test
-  public void testFindById_NotFound() {
+  void testFindById_NotFound() {
     when(persistentPort.findById(anyLong()))
         .thenReturn(Optional.empty());
 
@@ -62,7 +63,7 @@ public class StudentServiceTest {
   }
 
   @Test
-  public void testFindAll() {
+  void testFindAll() {
     when(persistentPort.findAll())
         .thenReturn(Collections.singletonList(TestUtils.buildStudentMock()));
 
@@ -77,7 +78,7 @@ public class StudentServiceTest {
   }
 
   @Test
-  public void testSave() {
+  void testSave() {
     Student student1 = new Student();
 
     when(persistentPort.save(any(Student.class)))
@@ -97,7 +98,7 @@ public class StudentServiceTest {
   }
 
   @Test
-  public void testUpdate_Success() {
+  void testUpdate_Success() {
     Student student = TestUtils.buildStudentMock();
 
     when(persistentPort.findById(anyLong()))
@@ -122,7 +123,7 @@ public class StudentServiceTest {
   }
 
   @Test
-  public void testUpdate_NotFound() {
+  void testUpdate_NotFound() {
     when(persistentPort.findById(anyLong()))
         .thenReturn(Optional.empty());
 
@@ -131,6 +132,29 @@ public class StudentServiceTest {
 
     verify(persistentPort, times(1)).findById(1L);
     verify(persistentPort, times(0)).save(TestUtils.buildStudentMock());
+  }
+
+  @Test
+  void testDeleteById_Success() {
+    when(persistentPort.findById(anyLong()))
+        .thenReturn(Optional.of(TestUtils.buildStudentMock()));
+
+    studentService.deleteById(1L);
+
+    verify(persistentPort, times(1)).findById(1L);
+    verify(persistentPort, times(1)).deleteById(1L);
+  }
+
+  @Test
+  void testDeleteById_NotFound() {
+    when(persistentPort.findById(anyLong()))
+        .thenReturn(Optional.empty());
+
+    assertThrows(StudentNotFoundException.class,
+        () -> studentService.deleteById(1L));
+
+    verify(persistentPort, times(1)).findById(1L);
+    verify(persistentPort, times(0)).deleteById(1L);
   }
 
 }
