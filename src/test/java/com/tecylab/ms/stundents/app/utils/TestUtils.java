@@ -1,6 +1,7 @@
 package com.tecylab.ms.stundents.app.utils;
 
 import com.tecylab.ms.stundents.app.domain.model.Student;
+import com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest.model.request.StudentCreateRequest;
 import com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest.model.response.StudentResponse;
 import com.tecylab.ms.stundents.app.insfrastracture.adapters.output.persistence.entity.StudentEntity;
 
@@ -36,6 +37,15 @@ public class TestUtils {
         .age(18)
         .address("Calle 1")
         .timeStamp(LocalDateTime.now().toString())
+        .build();
+  }
+
+  public static StudentCreateRequest buildStudentCreateRequestMock() {
+    return StudentCreateRequest.builder()
+        .firstname("Juan")
+        .lastname("Perez")
+        .age(18)
+        .address("Calle 1")
         .build();
   }
 

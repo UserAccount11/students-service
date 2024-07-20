@@ -45,10 +45,6 @@ public class StudentRestAdapter {
     return ResponseEntity
         .created(URI.create("/api/v1/students/".concat(response.getId().toString())))
         .body(response);
-
-//    return ResponseEntity.status(HttpStatus.CREATED)
-//        .body(restMapper.toStudentResponse(
-//            inputPort.save(restMapper.toStudent(request))));
   }
 
   @PutMapping("/v1/students/{id}")

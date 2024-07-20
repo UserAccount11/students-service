@@ -3,6 +3,7 @@ package com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest;
 import com.tecylab.ms.stundents.app.domain.exception.StudentNotFoundException;
 import com.tecylab.ms.stundents.app.insfrastracture.adapters.input.rest.model.response.ErrorResponse;
 import com.tecylab.ms.stundents.app.utils.ErrorCatalog;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,7 +40,7 @@ public class GlobalControllerAdvice {
         .message(STUDENT_BAD_PARAMETERS.getMessage())
         .details(bindingResult.getFieldErrors()
             .stream()
-            .map(fieldError -> fieldError.getDefaultMessage())
+            .map(DefaultMessageSourceResolvable::getDefaultMessage)
             .toList())
         .timestamp(LocalDateTime.now())
         .build();

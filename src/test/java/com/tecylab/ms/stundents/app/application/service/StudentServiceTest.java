@@ -11,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +93,6 @@ class StudentServiceTest {
     assertEquals("Calle 1", student.getAddress());
 
     verify(persistentPort, times(1)).save(student1);
-
   }
 
   @Test
