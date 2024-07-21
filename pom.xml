@@ -22,9 +22,8 @@
 		<maven.compiler.target>21</maven.compiler.target>
 		<sonar.projectKey>students-service</sonar.projectKey>
 		<sonar.host.url>http://localhost:9000</sonar.host.url>
-		<sonar.login>sqp_e026419b69f2b926ad44e0c9d73a30e808c894da</sonar.login>
+		<sonar.token>sqp_e026419b69f2b926ad44e0c9d73a30e808c894da</sonar.token>
 		<sonar.java.binaries>target/classes</sonar.java.binaries>
-		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 
 	<dependencies>
