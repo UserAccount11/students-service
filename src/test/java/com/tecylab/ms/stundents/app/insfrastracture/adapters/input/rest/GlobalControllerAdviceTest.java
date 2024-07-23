@@ -14,6 +14,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.tecylab.ms.stundents.app.utils.ErrorCatalog.GENERIC_ERROR;
+import static com.tecylab.ms.stundents.app.utils.ErrorCatalog.STUDENT_BAD_PARAMETERS;
+import static com.tecylab.ms.stundents.app.utils.ErrorCatalog.STUDENT_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.when;
@@ -35,7 +38,7 @@ class GlobalControllerAdviceTest {
   private StudentRestMapper restMapper;
 
   @Test
-  public void whenStudentNotFoundException_thenReturnNotFound() throws Exception {
+  void whenStudentNotFoundException_thenReturnNotFound() throws Exception {
     when(inputPort.findById(anyLong()))
         .thenThrow(new StudentNotFoundException());
 
@@ -43,29 +46,34 @@ class GlobalControllerAdviceTest {
             .accept(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isNotFound())
         .andExpect(result -> {
-          ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
-          assertThat(errorResponse.getCode()).isEqualTo("ERR_STUDENT_001");
-          assertThat(errorResponse.getMessage()).isEqualTo("Student not found");
+          ErrorResponse errorResponse = objectMapper.readValue(
+              result.getResponse().getContentAsString(), ErrorResponse.class);
+          assertThat(errorResponse.getCode()).isEqualTo(STUDENT_NOT_FOUND.getCode());
+          assertThat(errorResponse.getMessage()).isEqualTo(STUDENT_NOT_FOUND.getMessage());
+          assertThat(errorResponse.getTimestamp()).isNotNull();
         })
         .andDo(print());
   }
 
   @Test
-  public void whenMethodArgumentNotValidException_thenReturnBadRequest() throws Exception {
+  void whenMethodArgumentNotValidException_thenReturnBadRequest() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/students")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{}"))
         .andExpect(MockMvcResultMatchers.status().isBadRequest())
         .andExpect(result -> {
-          ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
-          assertThat(errorResponse.getCode()).isEqualTo("ERR_STUDENT_002");
-          assertThat(errorResponse.getMessage()).isEqualTo("Invalid parameters for creation student");
+          ErrorResponse errorResponse = objectMapper.readValue(
+              result.getResponse().getContentAsString(), ErrorResponse.class);
+          assertThat(errorResponse.getCode()).isEqualTo(STUDENT_BAD_PARAMETERS.getCode());
+          assertThat(errorResponse.getMessage()).isEqualTo(STUDENT_BAD_PARAMETERS.getMessage());
+          assertThat(errorResponse.getDetails()).isNotEmpty();
+          assertThat(errorResponse.getTimestamp()).isNotNull();
         })
         .andDo(print());
   }
 
   @Test
-  public void whenGenericException_thenReturnInternalServerError() throws Exception {
+  void whenGenericException_thenReturnInternalServerError() throws Exception {
     when(inputPort.findAll())
         .thenThrow(new RuntimeException("Generic error"));
 
@@ -74,8 +82,10 @@ class GlobalControllerAdviceTest {
         .andExpect(MockMvcResultMatchers.status().isInternalServerError())
         .andExpect(result -> {
           ErrorResponse errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorResponse.class);
-          assertThat(errorResponse.getCode()).isEqualTo("ERR_STUDENT_GEN_001");
-          assertThat(errorResponse.getMessage()).isEqualTo("Internal server error");
+          assertThat(errorResponse.getCode()).isEqualTo(GENERIC_ERROR.getCode());
+          assertThat(errorResponse.getMessage()).isEqualTo(GENERIC_ERROR.getMessage());
+          assertThat(errorResponse.getDetails().getFirst()).isEqualTo("Generic error");
+          assertThat(errorResponse.getTimestamp()).isNotNull();
         })
         .andDo(print());
   }
