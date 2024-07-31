@@ -15,6 +15,30 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_URL}
+          jwk-set-uri: ${AUTH_SERVER_URL}/oauth2/jwks
+      client:
+        registration:
+          students-service:
+            provider: spring
+            client-id: students-service
+            client-secret: 12345
+            authorization-grant-type: authorization_code
+            redirect-uri: ${REDIRECT_URL}
+            scope:
+              - openid
+              - profile
+              - read
+              - write
+            client-name: students-service
+        provider:
+          spring:
+            issuer-uri: ${AUTH_SERVER_URL}
+
 logging:
   level:
     org.hibernate.SQL: debug

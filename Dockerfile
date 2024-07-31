@@ -26,4 +26,4 @@ COPY --from=stage1 /app/$APP_NAME/target/students-service-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "students-service-0.0.1-SNAPSHOT.jar"]
+CMD ["sh", "-c", "sleep 10 && java -jar students-service-0.0.1-SNAPSHOT.jar"]

@@ -9,6 +9,19 @@ services:
       POSTGRES_DB: students_db
     ports:
       - "5432:5432"
+    networks:
+      - auth-network
+
+  auth-server:
+    image: mcubasgr/auth-server:latest
+    container_name: auth-server
+    environment:
+      CLIENT_URL: http://students-service:8080
+    ports:
+      - "9000:9000"
+    networks:
+      - auth-network
+
   students-service:
     build:
       context: .
@@ -17,9 +30,18 @@ services:
     container_name: students-service
     depends_on:
       - postgres
+      - auth-server
     environment:
       DB_HOST: jdbc:postgresql://postgres:5432/students_db
       DB_USER: postgres
       DB_PASSWORD: 12345
+      AUTH_SERVER_URL: http://auth-server:9000
+      REDIRECT_URL: http://students-service:8080/authorized
     ports:
       - "8080:8080"
+    networks:
+      - auth-network
+
+networks:
+  auth-network:
+    driver: bridge
