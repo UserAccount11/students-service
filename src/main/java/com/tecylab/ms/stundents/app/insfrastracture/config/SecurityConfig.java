@@ -1,4 +1,4 @@
-package com.tecylab.ms.stundents.app.insfrastracture.adapters.config;
+package com.tecylab.ms.stundents.app.insfrastracture.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
